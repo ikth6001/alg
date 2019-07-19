@@ -1,16 +1,18 @@
-package com.ikth.algs.baekjoon;
+package com.ikth.algs.baekjoon.ing;
 
 import java.util.Scanner;
 
 /**
  * https://www.acmicpc.net/problem/1023
+ * 
+ * 1020 < 1023 < 1040
  */
-public class Main {
+public class Q1023 {
 
 	public static void main(String[] args) {
 		
 		try(Scanner scanner= new Scanner(System.in)) {
-			Main m= new Main();
+			Q1023 m= new Q1023();
 			
 			int n= scanner.nextInt();
 			long k= scanner.nextLong();
