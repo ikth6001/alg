@@ -20,6 +20,109 @@ public class Q1020 {
 		}
 	}
 	
+	private final int T= 1;
+	private final int F= 0;
+	
+	private long solution(final String strTime) {
+		
+		/**
+		 * - dp[i][j][k] : i자리의 시간이고, j개의 선분이 남았을 때, 현재 숫자보다 큰거나/작거나(k) 일 때의 초 정보
+		 * 
+		 * - dp를 구하는 로직
+		 * 1. 입력 값의 선분 총 갯수 구함
+		 * 2. 최상단부터 시작하여 i초(0-9를 적절히 처리하여 Loop) 일 때 남은 선분 갯수 및 큼/작음 여부를 재귀 호출 하여 초 정보 저장
+		 *    - 여기서 적절이 처리한다는 의미는 입력 초보다 현재 초가 이미 크다면 0부터 시작, 아니라면 입력 초부터 시작 함을 의미
+		 * 3. 재귀호출의 결과 값을 dp에 저장하고 결과 값이 10이 아니면 바로 리턴(아니면 끝까지 Loop을 돈다)
+		 * 
+		 * - dp를 사용하는 로직
+		 * 1. dp의 i를 0부터 길이 n까지 차례로 방문하면서 dp값 + (이전 dp들의 값 * 10)을 재귀적으로 호출하며 구한다.
+		 * 
+		 * - 주의 사항
+		 * 1. 10^n-1을 넘어서는 경우 다시 0초부터 시작 하므로, solve의 리턴 값이 10이면 0초부터 시작한 것을 의미한다.
+		 * 2. 같은 길이의 시간이 0인 문자열을 만들어 dp 데이터를 채운다.
+		 * 3. 실제 입력 값으로 dp 데이터를 채운다.
+		 * 4. 만약 실제 입력 값으로 dp 데이터를 채운 리턴이 10이면 10^n-1을 넘는 것이므로 3번에서 채운 dp를 통해 값을 구하고 10^n을 더해준다.
+		 */
+		final int n= strTime.length();
+		final int cnt= getCnt(strTime);
+		
+		int[][][] dp= new int[n][cnt+1][2];
+		init(dp, -1);
+		
+		if(fill(dp, strTime, 0, cnt, false) != 10) {
+			calcVal= 0;
+			calc(dp, strTime, 0, cnt, false);
+			return calcVal - Long.valueOf(strTime);
+		}
+		
+		return 0L;
+	}
+	
+	private long calcVal;
+	
+	private void calc(int[][][]dp, String strTime, int pos, int left, boolean isBig) {
+		if(pos == strTime.length()) {
+			return;
+		}
+
+		int val= dp[pos][left][isBig ? T : F];
+		calcVal= calcVal * 10 + val;
+		calc(dp, strTime, pos+1, left - LENGTHS[val], isBig || strTime.charAt(pos)-'0' < val);
+	}
+	
+	private int fill(int[][][]dp, String strTime, int pos, int left, boolean isBig) {
+		
+		if(left < 0) {
+			return 10;
+		}
+		
+		if(pos == dp.length) {
+			return (isBig && left == 0) ? 0 : 10; // 크지 않은 상태에서 left가 0이라면 더 작던가 동일하단 의미
+		}
+		
+		int val= dp[pos][left][isBig ? T : F];
+		
+		if(val != -1) { // 이미 이전 단계에서 값을 구한 경우
+			return val;
+		}
+		
+		val= 10;
+		int digit= strTime.charAt(pos)-'0';
+		for(int i= isBig ? 0 : digit; i<10; i++) {
+			val= fill(dp, strTime, pos+1, left-LENGTHS[i], isBig || digit < i);
+			dp[pos][left][isBig ? T : F]= val;
+			
+			if(val != 10) {
+				dp[pos][left][isBig ? T : F]= i;
+				return i;
+			}
+		}
+		
+		return val;
+	}
+	
+	private void init(int[][][] dp, int val) {
+		// dp[i][j][k]는 null이 아님이 보장.
+		for(int i=0; i<dp.length; i++) {
+			for(int j=0; j<dp[i].length; j++) {
+				for(int k=0; k<dp[i][j].length; k++) {
+					dp[i][j][k]= val;
+				}
+			}
+		}
+	}
+	
+	private int getCnt(final String strTime) {
+		int cnt= 0;
+		
+		// 어차피 숫자임이 보장.
+		for(char digit : strTime.toCharArray()) {
+			cnt+= LENGTHS[digit-'0'];
+		}
+		
+		return cnt;
+	}
+	
 	private final Integer[] LENGTHS= new Integer[] { 6, 2, 5, 5, 4, 5, 6, 3, 7, 5 };
 	private long[] pow10= null;
 	private final long MAX= Long.MAX_VALUE;
@@ -28,7 +131,8 @@ public class Q1020 {
 	 * 못 풀어서 블로그 검색 https://blog.encrypted.gg/263
 	 * -> 이유는 모르겠는데 실패 함.. 블로그는 C++ 언어로 되어있는데 그 로직은 성공 함..
 	 */
-	private long solution(final String strTime) {
+	@SuppressWarnings("unused")
+	private long blog01(final String strTime) {
 		final int n= strTime.length();
 		final long longTime= Long.valueOf(strTime);
 		
