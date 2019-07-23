@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +23,10 @@ public class Q1020 {
 	private final int T= 1;
 	private final int F= 0;
 	
+	/**
+	 * 또 다른 블로그 참고 : http://blog.naver.com/PostView.nhn?blogId=pasdfq&logNo=221525007968
+	 * 이건 드디어 성공!!!
+	 */
 	private long solution(final String strTime) {
 		
 		/**
@@ -52,10 +56,19 @@ public class Q1020 {
 		if(fill(dp, strTime, 0, cnt, false) != 10) {
 			calcVal= 0;
 			calc(dp, strTime, 0, cnt, false);
+			
 			return calcVal - Long.valueOf(strTime);
+		} else {
+			final String zeroTime= String.format("%0" + n + "d", 0);
+			
+			init(dp, -1);
+			fill(dp, zeroTime, 0, cnt, false);
+			
+			calcVal= 0;
+			calc(dp, zeroTime, 0, cnt, false);
+			
+			return calcVal + (long) Math.pow(10, n) - Long.valueOf(strTime);
 		}
-		
-		return 0L;
 	}
 	
 	private long calcVal;
@@ -66,6 +79,10 @@ public class Q1020 {
 		}
 
 		int val= dp[pos][left][isBig ? T : F];
+		if(val == -1) {
+			return;
+		}
+		
 		calcVal= calcVal * 10 + val;
 		calc(dp, strTime, pos+1, left - LENGTHS[val], isBig || strTime.charAt(pos)-'0' < val);
 	}
