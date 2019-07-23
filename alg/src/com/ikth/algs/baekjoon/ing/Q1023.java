@@ -10,6 +10,11 @@ import java.util.Scanner;
 public class Q1023 {
 
 	public static void main(String[] args) {
+//		System.out.println("1");
+//		System.out.println(Integer.MAX_VALUE);
+//		System.out.println(Long.MAX_VALUE);
+//		System.out.println(new Double(Math.pow(2, 49)).longValue());
+//		System.out.println("2");
 		
 		try(Scanner scanner= new Scanner(System.in)) {
 			Q1023 m= new Q1023();
@@ -31,10 +36,7 @@ public class Q1023 {
 	private String solution(int n, long k) {
 		
 		/**
-		 * 2 -> ()
-		 * 4 -> ()(), (()) : 바로 위 각 괄호 문자열을 감싸거나 옆에 괄호를 더함(경우에 따라 중복될 수 있음)
-		 * 6 -> ()()(), (()()), ()(()), (())(), ((()))
-		 * 8 -> ()()()(), (()()()), ()(()()), (()())(), ((()())), ()()(()), ()(())(), (()(()))...
+		 * dp[i][j] : i길이인 문자열의 j번째 괄호 값
 		 */
 		
 		return null;
