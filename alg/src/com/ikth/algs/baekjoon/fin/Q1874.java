@@ -1,10 +1,12 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class Q1874 {
@@ -26,26 +28,44 @@ public class Q1874 {
 		int cnt= Integer.valueOf(br.readLine());
 		
 		Stack<Integer> intStack= new Stack<>();
-		Stack<Character> charStack= new Stack<>();
+		Queue<Character> charQueue= new LinkedList<Character>();
 		int last= 0;
 		
+		/** num의 최소값은 1 */
 		for(int i=1; i<=cnt; i++) {
 			
 			int num= Integer.valueOf(br.readLine());
-			if(num > last) {
-				for(int j= last+1; j<= num; j++) {
+			
+			if(last < num) {
+				
+				for(int j=last+1; j<=num; j++) {
+					
 					intStack.push(j);
-					charStack.push("+\n");
-					intStack.pop();
-					bw.write("-\n");
+					charQueue.add('+');
 				}
 				last= num;
-			} else if(num == stack.peek()) {
-				stack.pop();
-				bw.write("-\n");
-			} else {
+				intStack.pop();
+				charQueue.add('-');
+			} else if(last > num
+					&& !intStack.isEmpty()
+					&& intStack.peek() >= num) {
 				
+				while(!intStack.isEmpty()) {
+					int n= intStack.pop();
+					charQueue.add('-');
+					if(n == num) {
+						break;
+					}
+				}
+			} else {
+				System.out.println("NO");
+				return;
 			}
+		}
+		
+		while(charQueue.size() > 0) {
+			
+			System.out.println(charQueue.poll());
 		}
 	}
 }
