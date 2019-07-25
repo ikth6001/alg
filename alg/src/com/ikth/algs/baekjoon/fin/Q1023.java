@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * https://www.acmicpc.net/problem/1023
  */
-public class Main {
+public class Q1023 {
 
 	public static void main(String[] args) {
 //		System.out.println("1");
@@ -19,7 +19,7 @@ public class Main {
 //		System.out.println("2");
 		
 		try(Scanner scanner= new Scanner(System.in)) {
-			Main m= new Main();
+			Q1023 m= new Q1023();
 			
 			int n= scanner.nextInt();
 			long k= scanner.nextLong();
