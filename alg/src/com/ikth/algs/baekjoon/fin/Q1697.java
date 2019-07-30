@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -50,19 +50,25 @@ public class Q1697 {
 			int d= distances[pos] + 1;
 			
 			if(pos > to) {
-				queue.add(pos-1);
-				distances[pos-1]= d < distances[pos-1] ? d : distances[pos-1];
-			} else {
-				if(pos > 0) {
+				if(d < distances[pos-1]) {
 					queue.add(pos-1);
-					distances[pos-1]= d < distances[pos-1] ? d : distances[pos-1];
+					distances[pos-1]= d;
 				}
-
-				queue.add(pos+1);
-				distances[pos+1]= d < distances[pos+1] ? d : distances[pos+1];
+			} else {
+				if(pos > 0 && d < distances[pos-1]) {
+					queue.add(pos-1);
+					distances[pos-1]= d;
+				}
 				
-				queue.add(pos*2);
-				distances[pos*2]= d < distances[pos*2] ? d : distances[pos*2];
+				if(d < distances[pos+1]) {
+					queue.add(pos+1);
+					distances[pos+1]= d;
+				}
+				
+				if(d < distances[pos*2]) {
+					queue.add(pos*2);
+					distances[pos*2]= d;
+				}
 			}
 		}
 		
