@@ -5,13 +5,13 @@ import java.util.Scanner;
 /**
  * https://www.acmicpc.net/problem/1475
  */
-public class Q1475 {
+public class Q01475 {
 
 	public static void main(String[] args) {
 		
 		try(Scanner scanner= new Scanner(System.in)) {
 			
-			Q1475 m= new Q1475();
+			Q01475 m= new Q01475();
 			m.solution(scanner.nextLine());
 		}
 	}

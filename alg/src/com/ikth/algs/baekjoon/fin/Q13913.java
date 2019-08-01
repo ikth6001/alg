@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,6 @@ import java.util.Queue;
 
 /**
  * https://www.acmicpc.net/problem/13913
- * -> 맞긴 했는데 BFS에 대한 이해도가 조금 부족한 듯??? distance라는 자료형이 필요할까?? 고민 후 수정 해보자
  */
 public class Q13913 {
 

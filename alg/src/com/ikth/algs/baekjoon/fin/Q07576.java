@@ -8,13 +8,13 @@ import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Q7576 {
+public class Q07576 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q7576 m= new Q7576();
+			Q07576 m= new Q07576();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

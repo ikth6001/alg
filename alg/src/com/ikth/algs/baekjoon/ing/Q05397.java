@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * https://www.acmicpc.net/problem/5397
  */
-public class Q5397 {
+public class Q05397 {
 
 	/**
 	 * Scanner로 하면 시간 초과가 뜸. 앞으로는 BufferedReader 및 BufferedWriter를 쓰도록 습관을 갖자..
@@ -21,7 +21,7 @@ public class Q5397 {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q5397 m= new Q5397();
+			Q05397 m= new Q05397();
 			
 			int cnt= Integer.valueOf(br.readLine());
 			for(int i=0; i<cnt; i++) {

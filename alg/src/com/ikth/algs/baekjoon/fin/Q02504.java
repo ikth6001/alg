@@ -7,13 +7,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Stack;
 
-public class Q2504 {
+public class Q02504 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q2504 m= new Q2504();
+			Q02504 m= new Q02504();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * https://www.acmicpc.net/problem/1023
  */
-public class Q1023 {
+public class Q01023 {
 
 	public static void main(String[] args) {
 //		System.out.println("1");
@@ -19,7 +19,7 @@ public class Q1023 {
 //		System.out.println("2");
 		
 		try(Scanner scanner= new Scanner(System.in)) {
-			Q1023 m= new Q1023();
+			Q01023 m= new Q01023();
 			
 			int n= scanner.nextInt();
 			long k= scanner.nextLong();

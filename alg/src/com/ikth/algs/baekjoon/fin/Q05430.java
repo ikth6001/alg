@@ -9,13 +9,13 @@ import java.io.OutputStreamWriter;
 /**
  * https://www.acmicpc.net/problem/5430
  */
-public class Q5430 {
+public class Q05430 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q5430 m= new Q5430();
+			Q05430 m= new Q05430();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

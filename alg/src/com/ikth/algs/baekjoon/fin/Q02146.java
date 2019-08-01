@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public class Q2146 {
+public class Q02146 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q2146 m= new Q2146();
+			Q02146 m= new Q02146();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

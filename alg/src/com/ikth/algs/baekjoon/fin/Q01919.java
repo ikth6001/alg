@@ -9,14 +9,14 @@ import java.io.OutputStreamWriter;
 /**
  * https://www.acmicpc.net/problem/1919
  */
-public class Q1919 {
+public class Q01919 {
 	
 	public static void main(String[] args) {
 		
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q1919 m= new Q1919();
+			Q01919 m= new Q01919();
 			bw.write(String.valueOf(m.solution(br.readLine(), br.readLine())));
 			bw.flush();
 		} catch (IOException e) {

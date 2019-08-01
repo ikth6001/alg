@@ -11,13 +11,13 @@ import java.util.Queue;
 /**
  * https://www.acmicpc.net/problem/1926
  */
-public class Q1926 {
+public class Q01926 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q1926 m= new Q1926();
+			Q01926 m= new Q01926();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

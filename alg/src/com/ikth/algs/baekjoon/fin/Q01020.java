@@ -10,12 +10,12 @@ import java.util.Scanner;
 /**
  * https://www.acmicpc.net/problem/1020
  */
-public class Q1020 {
+public class Q01020 {
 	
 	public static void main(String[] args) throws IOException {
 		try (Scanner scanner = new Scanner(System.in)) {
 			String time = scanner.next();
-			Q1020 m = new Q1020();
+			Q01020 m = new Q01020();
 			System.out.println(m.solution(time));
 		}
 	}

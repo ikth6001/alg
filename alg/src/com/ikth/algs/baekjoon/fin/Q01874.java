@@ -9,13 +9,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class Q1874 {
+public class Q01874 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Q1874 m= new Q1874();
+			Q01874 m= new Q01874();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {

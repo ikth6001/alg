@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class Q2493 {
+public class Q02493 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
-			Q2493 m= new Q2493();
+			Q02493 m= new Q02493();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {
