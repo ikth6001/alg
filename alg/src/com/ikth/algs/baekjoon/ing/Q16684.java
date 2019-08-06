@@ -68,6 +68,7 @@ public class Q16684 {
 	}
 	
 	private void doHanoi03(int size, int upIdx, int botIdx, int from, int to) {
+		
 		if(time == 0L || size == 0 || from == to) {
 			return;
 		} else if(size == 1) {
@@ -84,7 +85,7 @@ public class Q16684 {
 			if(isRight(from, to)) {
 				int rightOfTo= getRightLoc(to);
 				doHanoi03(size-1, upIdx, botIdx-1, from, rightOfTo);
-				doHanoi03(1, upIdx, upIdx, from, to);
+				doHanoi03(1, botIdx, botIdx, from, to);
 				doHanoi03(size-1, upIdx, botIdx-1, rightOfTo, to);
 			} else {
 				int next= getRightLoc(from);
@@ -101,7 +102,8 @@ public class Q16684 {
 		if(time == 0L || size == 0 || from == to) {
 			return;
 		} else if(size == 1) {
-			if(from == 2) {
+			if(from == 2
+					|| to == 2) {
 				context[upIdx]= to;
 				time--;
 			} else {
