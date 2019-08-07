@@ -5,7 +5,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.math.BigInteger;
 
+/**
+ * https://www.acmicpc.net/problem/16684
+ */
 public class Q16684 {
 
 	public static void main(String[] args) {
@@ -22,14 +26,14 @@ public class Q16684 {
 	}
 	
 	private int[] context;
-	private long time;
+	private BigInteger time;
 	
 	private void solution(BufferedReader br, BufferedWriter bw) throws NumberFormatException, IOException {
 		
 		String[] data= br.readLine().split(" ");
 		int m= Integer.valueOf(data[0]);
 		int n= Integer.valueOf(data[1]);
-		this.time= Long.valueOf(data[2]);
+		this.time= new BigInteger(data[2]);
 		
 		this.context= new int[n];
 		for(int i=0; i<n; i++) {
@@ -69,16 +73,16 @@ public class Q16684 {
 	
 	private void doHanoi03(int size, int upIdx, int botIdx, int from, int to) {
 		
-		if(time == 0L || size == 0 || from == to) {
+		if(time.equals(BigInteger.ZERO) || size == 0 || from == to) {
 			return;
 		} else if(size == 1) {
 			if(isRight(from, to)) {
 				context[upIdx]= to;
-				time--;
+				time= time.subtract(BigInteger.ONE);
 			} else {
 				int next= getRightLoc(from);
 				context[upIdx]= next;
-				time--;
+				time= time.subtract(BigInteger.ONE);
 				doHanoi03(size, upIdx, upIdx, next, to);
 			}
 		} else {
@@ -99,16 +103,16 @@ public class Q16684 {
 	}
 	
 	private void doHanoi02(int size, int upIdx, int botIdx, int from, int to) {
-		if(time == 0L || size == 0 || from == to) {
+		if(time.equals(BigInteger.ZERO) || size == 0 || from == to) {
 			return;
 		} else if(size == 1) {
 			if(from == 2
 					|| to == 2) {
 				context[upIdx]= to;
-				time--;
+				time= time.subtract(BigInteger.ONE);
 			} else {
 				context[upIdx]= 2;
-				time--;
+				time= time.subtract(BigInteger.ONE);
 				doHanoi02(size, upIdx, upIdx, 2, to);
 			}
 		} else {
@@ -128,11 +132,11 @@ public class Q16684 {
 	}
 	
 	private void doHanoi01(int size, int upIdx, int botIdx, int from, int mid, int to) {
-		if(time == 0L || size == 0) {
+		if(time.equals(BigInteger.ZERO) || size == 0) {
 			return;
 		} else if(size == 1) {
 			context[upIdx]= to;
-			time--;
+			time= time.subtract(BigInteger.ONE);
 		} else {
 			doHanoi01(size-1, upIdx, botIdx-1, from, to, mid);
 			doHanoi01(1, botIdx, botIdx, from, mid, to);
