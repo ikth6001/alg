@@ -8,9 +8,7 @@ import java.io.OutputStreamWriter;
 
 /**
  * https://www.acmicpc.net/problem/1799
- * 
- * -> 현재 시간초과 나고 있음 어떻게 줄일까??
- * -> 비숍은 대각선만 관여하므로 하나의 row를 담기 시작한다면 대각선 제외 전부 담을 수 있다. 굳이 재귀로 하나 row의 모든 행을 탐색할 필요가 있을까??
+ * -> 맞왜틀..? ㅜㅜ
  */
 public class Q01799 {
 
@@ -45,11 +43,8 @@ public class Q01799 {
 	private int solution(int[][] chessMap, boolean[] ltrb, boolean[] lbrt, int h, int w) {
 
 		int n= chessMap.length;
-		if(h == n-1 && w == n-1) {
-			return (chessMap[h][w] == 0 || ltrb[Math.abs(h-w)] || lbrt[h+w]) ? 0 : 1;
-		}
 		
-		if(w == n-1) {
+		if(w == n) {
 			w= 0;
 			h++;
 		}
@@ -58,26 +53,22 @@ public class Q01799 {
 		for(int i=h; i<n; i++) {
 			
 			for(int j=w; j<n; j++) {
-				int cnt= 0;
-				boolean changed= false;
 				
 				int ltrbIdx= i-j+n-1;
 				int lbrtIdx= i+j;
 				
-				if(chessMap[i][j] == 1 && !ltrb[ltrbIdx] && !lbrt[lbrtIdx]) {
-					ltrb[ltrbIdx]= true;
-					lbrt[lbrtIdx]= true;
-					cnt= 1;
-					changed= true;
+				if(chessMap[i][j] == 0 || ltrb[ltrbIdx] || lbrt[lbrtIdx]) {
+					continue;
 				}
 				
-				cnt+= solution(chessMap, ltrb, lbrt, i, j+1);
+				ltrb[ltrbIdx]= true;
+				lbrt[lbrtIdx]= true;
+				
+				int cnt= 1 + solution(chessMap, ltrb, lbrt, i, j+1);
 				max= max < cnt ? cnt : max;
 				
-				if(changed) {
-					ltrb[ltrbIdx]= false;
-					lbrt[lbrtIdx]= false;
-				}
+				ltrb[ltrbIdx]= false;
+				lbrt[lbrtIdx]= false;
 			}
 		}
 		
