@@ -53,7 +53,7 @@ public class Q01799 {
 		for(int i=h; i<n; i++) {
 			
 			for(int j=w; j<n; j++) {
-				
+				w= 0; // 이걸 안해서 답이 틀렸었음. 아무튼 계속 시간초과는 나므로 방법 생각 필요.
 				int ltrbIdx= i-j+n-1;
 				int lbrtIdx= i+j;
 				
