@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.fin;
+package com.ikth.algs.baekjoon.ing;
 
 import java.util.ArrayList;
 import java.util.Comparator;

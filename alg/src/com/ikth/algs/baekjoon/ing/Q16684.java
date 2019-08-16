@@ -9,6 +9,8 @@ import java.math.BigInteger;
 
 /**
  * https://www.acmicpc.net/problem/16684
+ * -> 일단 시간초과가 뜨고 있음. C언어로 같은 로직을 구현 해볼까 생각 중.
+ *    굉장히 큰 숫자를 저정하기 위해 BigInteger를 사용 하는데 immutable 객체이므로 성능에 좋지 않은듯
  */
 public class Q16684 {
 

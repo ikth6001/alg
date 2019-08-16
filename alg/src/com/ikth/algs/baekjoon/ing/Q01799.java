@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 
 /**
  * https://www.acmicpc.net/problem/1799
- * -> 맞왜틀..? ㅜㅜ
  */
 public class Q01799 {
 
