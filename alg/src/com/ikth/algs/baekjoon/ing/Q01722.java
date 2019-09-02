@@ -33,19 +33,98 @@ public class Q01722 {
 		String[] row= br.readLine().split(" ");
 		
 		
+		int[] nums= null;
 		switch(row[0]) {
 			case "1":
-				int[] nums= solution(n, Long.valueOf(row[1]));
+				nums= solution(n, Long.valueOf(row[1]));
 				for(int num : nums) {
 					bw.write(String.valueOf(num) + " ");
 				}
 				break;
 			case "2":
-				/**
-				 * TODO
-				 */
+				nums= new int[n];
+				for(int i=0; i<n; i++) {
+					nums[i]= Integer.valueOf(row[i+1]);
+				}
+				long rank= solution(nums);
+				bw.write(String.valueOf(rank));
 				break;
 		}
+	}
+	
+//	public static void main(String[] args) {
+//		Q01722 m= new Q01722();
+//		int cnt= 5;
+//		
+//		long[] facts= m.factorials(cnt);
+//		List<int[]> numList= new ArrayList<>();
+//		
+//		for(int i=1; i<=facts[cnt]; i++) {
+//			int[] nums= m.solution(cnt, i);
+//			numList.add(nums);
+//			
+//			System.out.print("rank ["+i+"], ");
+//			for(int n : nums) {
+//				System.out.print(n + " ");
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
+//		System.out.println();
+//		for(int[] nums : numList) {
+//			long rank= m.solution(nums);
+//			for(int n : nums) {
+//				System.out.print(n + " ");
+//			}
+//			System.out.println(", rank ["+rank+"]");
+//		}
+//	}
+	
+	/**
+	 * case 2.
+	 * 
+	 * 1. boolean[1..n]을 생성하고 idx=1로 초기화 한다.
+	 * 2. rank 값의 범위를 구한다. min < rank <= max
+	 *    - min : [idx+1..n]의 factorial * (현재 숫자-1 등급)
+	 *    - max : [idx+1..n]의 factorial * (현재 숫자 등급)
+	 * 3. idx를 증가하면서 min과 max를 갱신해나간다.
+	 * 4. min과 max의 값 차이가 1이 나면 max가 rank가 된다.
+	 */
+	private long solution(int[] nums) {
+		
+		int n= nums.length;
+		boolean[] used= new boolean[n];
+		long[] facts= factorials(n);
+		long min= 0L;
+		long max= Long.MAX_VALUE;
+		int idx= 0;
+		
+		while(max-min > 1L) {
+			
+			long f= facts[n-idx-1];
+			int grade= getGrade(used, nums[idx]);
+			
+			long pMin= min;
+			min= min + f * (grade-1);
+			max= pMin + f * grade;
+			
+			used[nums[idx]-1]= true;
+			idx++;
+		}
+		
+		return max;
+	}
+	
+	private int getGrade(boolean[] used, int num) {
+		int grade= 0;
+		for(int i=0; i<num; i++) {
+			if(used[i]) {
+				continue;
+			}
+			grade++;
+		}
+		
+		return grade;
 	}
 	
 	/**
@@ -82,18 +161,33 @@ public class Q01722 {
 					}
 				}
 				break;
+			} else if(rank == 1L) {
+				for(int i=idx; i<nums.length; i++) {
+					for(int j=0; j<used.length; j++) {
+						if(!used[j]) {
+							nums[i]= j+1;
+							used[j]= true;
+							break;
+						}
+					}
+				}
+				break;
 			}
 			
-			long ofact= fact;
-			while(fact < rank) {
-				fact= fact + ofact;
+			long min= 0L;
+			long max= fact;
+			
+			while(max < rank) {
+				max= max + fact;
 				cnt++;
 			}
+			
+			min= max - fact;
 			
 			int num= getNum(used, cnt);
 			used[num-1]= true;
 			nums[idx++]= num;
-			rank= fact - rank;
+			rank= rank - min;
 		}
 		
 		return nums;
