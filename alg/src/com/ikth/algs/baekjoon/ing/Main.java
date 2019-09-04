@@ -32,7 +32,6 @@ public class Main {
 		int w= Integer.valueOf(row[1]);
 		
 		char[][] board= new char[h][];
-		boolean[][] moveHist= new boolean[h][w];
 		int[] rLoc= null;
 		int[] bLoc= null;
 		int[] oLoc= null;
@@ -56,7 +55,7 @@ public class Main {
 			}
 		}
 		
-		solution(board, rLoc, bLoc, oLoc, 0, moveHist);
+		solution(board, rLoc, bLoc, oLoc, 0, new boolean[h][w], new boolean[h][w]);
 		if(minCnt == 11) {
 			bw.write("-1");
 		} else {
@@ -66,15 +65,15 @@ public class Main {
 	
 	private char[] moveDirs= new char[] {'U', 'R', 'D', 'L'};
 	
-	private void solution(char[][] board, int[] rLoc, int[] bLoc, int[] oLoc, int cnt, boolean[][] moveHist) {
-		if(cnt == 10) {
-			return;
-		}
+	private void solution(char[][] board, int[] rLoc, int[] bLoc, int[] oLoc, int cnt, boolean[][] rMoveHist, boolean[][] bMoveHist) {
+//		if(cnt == 10) {
+//			return;
+//		}
 		
 		/**
 		 * 1. R이 위로 이동 가능한지 확인
-		 * 2. 가능하다면 B가 위로 이동하면서 O를 만나는지 확인
-		 * 3. 가능하다면 R이 위로 이동하면서 O를 만나는지 확인. 만난다면 cnt 저장후 메소드 return;
+		 * 2. 가능하다면 B가 위로 이동하면서 O를 만나는지 확인하고 만나면 위로 이동은 연산 안함
+		 * 3. 2번이 아닌 상태에서, 가능하다면 R이 위로 이동하면서 O를 만나는지 확인. 만난다면 cnt 저장후 메소드 return;
 		 * 4. B가 O를 안 만난다면 R과 B의 위치 갱신 후 solution 재귀호출
 		 * 5. 1~4번을 우,아래,좌 방향을 적용하여 반복
 		 */
@@ -85,22 +84,41 @@ public class Main {
 					continue;
 				}
 				if(canMeetHole(board, rLoc, oLoc, dir)) {
-					this.minCnt= this.minCnt > (cnt+1) ? cnt+1 : minCnt;
-					continue;
+					this.minCnt= this.minCnt > (cnt+1) ? (cnt+1) : minCnt;
+					break;
 				}
 				
 				int rh= rLoc[0], rw= rLoc[1];
 				int bh= bLoc[0], bw= bLoc[1];
+				
+//				System.out.println("move before : " + dir + ", red(" + rLoc[0] + ", " + rLoc[1] + "), blue(" + bLoc[0] + ", " + bLoc[1] + ")");
 				move(board, rLoc, bLoc, dir);
-				if(moveHist[rLoc[0]][rLoc[1]]) {
+//				System.out.println("move to : " + dir + ", red(" + rLoc[0] + ", " + rLoc[1] + "), blue(" + bLoc[0] + ", " + bLoc[1] + ")");
+//				for(int i=0; i<board.length; i++) {
+//					for(int j=0; j<board[i].length; j++) {
+//						System.out.print(board[i][j]);
+//					}
+//					System.out.println();
+//				}
+//				System.out.println("\n");
+				
+				if(rMoveHist[rLoc[0]][rLoc[1]] && bMoveHist[bLoc[0]][bLoc[1]]) {
+					rLoc[0]= rh;
+					rLoc[1]= rw;
+					bLoc[0]= bh;
+					bLoc[1]= bw;
 					continue;
 				}
-				moveHist[rLoc[0]][rLoc[1]]= true;
-				solution(board, rLoc, bLoc, oLoc, cnt+1, moveHist);
+				rMoveHist[rLoc[0]][rLoc[1]]= true;
+				bMoveHist[bLoc[0]][bLoc[1]]= true;
+				solution(board, rLoc, bLoc, oLoc, cnt+1, rMoveHist, bMoveHist);
 				
-				rLoc= new int[] {rh, rw};
-				bLoc= new int[] {bh, bw};
-				moveHist[rLoc[0]][rLoc[1]]= false;
+				rMoveHist[rLoc[0]][rLoc[1]]= false;
+				bMoveHist[bLoc[0]][bLoc[1]]= false;
+				rLoc[0]= rh;
+				rLoc[1]= rw;
+				bLoc[0]= bh;
+				bLoc[1]= bw;
 			}
 		}
 	}
@@ -114,6 +132,11 @@ public class Main {
 		while(rMove || bMove) {
 			rMove= false;
 			bMove= false;
+			int pRh= rh;
+			int pRw= rw;
+			int pBh= bh;
+			int pBw= bw;
+			
 			switch(dir) {
 				case 'U':
 					if(board[rh-1][rw] != '#') {
@@ -156,15 +179,26 @@ public class Main {
 					}
 					break;
 			}
+			
+			if(rh == bh && rw == bw) {
+				if(rMove) {
+					rh= pRh;
+					rw= pRw;
+					rMove= false;
+				} else {
+					bh= pBh;
+					bw= pBw;
+					bMove= false;
+				}
+			}
 		}
 		
+		board[rLoc[0]][rLoc[1]]= '.';
+		board[bLoc[0]][bLoc[1]]= '.';
 		rLoc[0]= rh;
 		rLoc[1]= rw;
 		bLoc[0]= bh;
 		bLoc[1]= bw;
-		
-		board[rLoc[0]][rLoc[1]]= '.';
-		board[bLoc[0]][bLoc[1]]= '.';
 		board[rh][rw]= 'R';
 		board[bh][bw]= 'B';
 	}
@@ -224,28 +258,27 @@ public class Main {
 		int rh= rLoc[0], rw= rLoc[1], bh= bLoc[0], bw= bLoc[1];
 		switch(dir) {
 			case 'U':
-				rh= rLoc[0]-1;
-				bh= bLoc[0]-1;
+				rh--;
+				bh--;
 				break;
 			case 'R':
-				rw= rLoc[1]+1;
-				bw= bLoc[1]+1;
+				rw++;
+				bw++;
 				break;
 			case 'D':
-				rh= rLoc[0]+1;
-				bh= bLoc[0]+1;
+				rh++;
+				bh++;
 				break;
 			case 'L':
-				rw= rLoc[1]-1;
-				bw= bLoc[1]-1;
+				rw--;
+				bw--;
 				break;
 		}
 		
 		if(rh == bLoc[0] && rw == bLoc[1]) {
 			return board[bh][bw] != '#';
-		} else if(board[rh][rw] != '#') {
-			return true;
 		}
-		return false;
+
+		return board[rh][rw] != '#';
 	}
 }
