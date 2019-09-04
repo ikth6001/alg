@@ -9,21 +9,18 @@ import java.io.OutputStreamWriter;
 /**
  * https://www.acmicpc.net/problem/13460
  */
-public class Main {
+public class Q13460 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
-			
-			Main m= new Main();
+			Q13460 m= new Q13460();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private int minCnt= 11;
 	
 	private void solution(BufferedReader br, BufferedWriter bw) throws NumberFormatException, IOException {
 		
@@ -64,49 +61,54 @@ public class Main {
 	}
 	
 	private char[] moveDirs= new char[] {'U', 'R', 'D', 'L'};
+	private int minCnt= 11;
 	
 	private void solution(char[][] board, int[] rLoc, int[] bLoc, int[] oLoc, int cnt, boolean[][] rMoveHist, boolean[][] bMoveHist) {
-//		if(cnt == 10) {
-//			return;
-//		}
+		if(cnt == 10) {
+			return;
+		}
 		
 		/**
-		 * 1. R이 위로 이동 가능한지 확인
-		 * 2. 가능하다면 B가 위로 이동하면서 O를 만나는지 확인하고 만나면 위로 이동은 연산 안함
-		 * 3. 2번이 아닌 상태에서, 가능하다면 R이 위로 이동하면서 O를 만나는지 확인. 만난다면 cnt 저장후 메소드 return;
+		 * 1. 이동 가능하다면 B가 위로 이동하면서 O를 만나는지 확인하고 만나면 위로 이동은 연산 안함
+		 * 2. 1번이 아닌 상태에서, 이동 가능하다면 R이 위로 이동하면서 O를 만나는지 확인. 만난다면 cnt 저장후 메소드 return;
+		 * 3. B와 R의 이동을 위치를 배열에 기록해 재방문 안하도록 처리
 		 * 4. B가 O를 안 만난다면 R과 B의 위치 갱신 후 solution 재귀호출
 		 * 5. 1~4번을 우,아래,좌 방향을 적용하여 반복
 		 */
 		for(char dir : moveDirs) {
-			if(canMove(board, rLoc, bLoc, dir)) {
+			if(canMeetHole(board, bLoc, oLoc, dir)) {
+				continue;
+			}
+			if(canMeetHole(board, rLoc, oLoc, dir)) {
+				this.minCnt= this.minCnt > (cnt+1) ? (cnt+1) : minCnt;
+				break;
+			}
+			
+			int rh= rLoc[0], rw= rLoc[1];
+			int bh= bLoc[0], bw= bLoc[1];
+			if(move(board, rLoc, bLoc, dir)) {
 				
-				if(canMeetHole(board, bLoc, oLoc, dir)) {
-					continue;
-				}
-				if(canMeetHole(board, rLoc, oLoc, dir)) {
-					this.minCnt= this.minCnt > (cnt+1) ? (cnt+1) : minCnt;
-					break;
-				}
-				
-				int rh= rLoc[0], rw= rLoc[1];
-				int bh= bLoc[0], bw= bLoc[1];
-				
-//				System.out.println("move before : " + dir + ", red(" + rLoc[0] + ", " + rLoc[1] + "), blue(" + bLoc[0] + ", " + bLoc[1] + ")");
-				move(board, rLoc, bLoc, dir);
-//				System.out.println("move to : " + dir + ", red(" + rLoc[0] + ", " + rLoc[1] + "), blue(" + bLoc[0] + ", " + bLoc[1] + ")");
+//				System.out.println("move to : " + dir);
 //				for(int i=0; i<board.length; i++) {
 //					for(int j=0; j<board[i].length; j++) {
 //						System.out.print(board[i][j]);
 //					}
 //					System.out.println();
 //				}
-//				System.out.println("\n");
+//				System.out.println();
+//				System.out.println();
 				
 				if(rMoveHist[rLoc[0]][rLoc[1]] && bMoveHist[bLoc[0]][bLoc[1]]) {
+					board[rLoc[0]][rLoc[1]]= '.';
+					board[bLoc[0]][bLoc[1]]= '.';
+					
 					rLoc[0]= rh;
 					rLoc[1]= rw;
 					bLoc[0]= bh;
 					bLoc[1]= bw;
+					
+					board[rLoc[0]][rLoc[1]]= 'R';
+					board[bLoc[0]][bLoc[1]]= 'B';
 					continue;
 				}
 				rMoveHist[rLoc[0]][rLoc[1]]= true;
@@ -123,10 +125,11 @@ public class Main {
 		}
 	}
 	
-	private void move(char[][] board, int[] rLoc, int[] bLoc, char dir) {
+	private boolean move(char[][] board, int[] rLoc, int[] bLoc, char dir) {
 		int rh= rLoc[0], rw= rLoc[1];
 		int bh= bLoc[0], bw= bLoc[1];
 		
+		boolean hasBeenMoved= false;
 		boolean rMove= true;
 		boolean bMove= true;
 		while(rMove || bMove) {
@@ -191,6 +194,10 @@ public class Main {
 					bMove= false;
 				}
 			}
+			
+			if(rMove || bMove) {
+				hasBeenMoved= true;
+			}
 		}
 		
 		board[rLoc[0]][rLoc[1]]= '.';
@@ -201,6 +208,8 @@ public class Main {
 		bLoc[1]= bw;
 		board[rh][rw]= 'R';
 		board[bh][bw]= 'B';
+		
+		return hasBeenMoved;
 	}
 	
 	private boolean canMeetHole(char[][] board, int[] loc, int[] oLoc, char dir) {
@@ -250,35 +259,5 @@ public class Main {
 		}
 		
 		return false;
-	}
-	
-	
-	private boolean canMove(char[][] board, int[] rLoc, int[] bLoc, char dir) {
-		
-		int rh= rLoc[0], rw= rLoc[1], bh= bLoc[0], bw= bLoc[1];
-		switch(dir) {
-			case 'U':
-				rh--;
-				bh--;
-				break;
-			case 'R':
-				rw++;
-				bw++;
-				break;
-			case 'D':
-				rh++;
-				bh++;
-				break;
-			case 'L':
-				rw--;
-				bw--;
-				break;
-		}
-		
-		if(rh == bLoc[0] && rw == bLoc[1]) {
-			return board[bh][bw] != '#';
-		}
-
-		return board[rh][rw] != '#';
 	}
 }
