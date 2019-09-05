@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -52,7 +52,12 @@ public class Q13460 {
 			}
 		}
 		
-		solution(board, rLoc, bLoc, oLoc, 0, new boolean[h][w], new boolean[h][w]);
+		boolean[][] rMoveHist= new boolean[h][w];
+		boolean[][] bMoveHist= new boolean[h][w];
+		rMoveHist[rLoc[0]][rLoc[1]]= true;
+		bMoveHist[bLoc[0]][bLoc[1]]= true;
+		
+		solution(board, rLoc, bLoc, oLoc, 0, rMoveHist, bMoveHist);
 		if(minCnt == 11) {
 			bw.write("-1");
 		} else {
@@ -88,16 +93,6 @@ public class Q13460 {
 			int bh= bLoc[0], bw= bLoc[1];
 			if(move(board, rLoc, bLoc, dir)) {
 				
-//				System.out.println("move to : " + dir);
-//				for(int i=0; i<board.length; i++) {
-//					for(int j=0; j<board[i].length; j++) {
-//						System.out.print(board[i][j]);
-//					}
-//					System.out.println();
-//				}
-//				System.out.println();
-//				System.out.println();
-				
 				if(rMoveHist[rLoc[0]][rLoc[1]] && bMoveHist[bLoc[0]][bLoc[1]]) {
 					board[rLoc[0]][rLoc[1]]= '.';
 					board[bLoc[0]][bLoc[1]]= '.';
@@ -111,12 +106,16 @@ public class Q13460 {
 					board[bLoc[0]][bLoc[1]]= 'B';
 					continue;
 				}
+				
+				boolean pRmoveHist= rMoveHist[rLoc[0]][rLoc[1]];
+				boolean pBmoveHist= bMoveHist[bLoc[0]][bLoc[1]];
 				rMoveHist[rLoc[0]][rLoc[1]]= true;
 				bMoveHist[bLoc[0]][bLoc[1]]= true;
+				
 				solution(board, rLoc, bLoc, oLoc, cnt+1, rMoveHist, bMoveHist);
 				
-				rMoveHist[rLoc[0]][rLoc[1]]= false;
-				bMoveHist[bLoc[0]][bLoc[1]]= false;
+				rMoveHist[rLoc[0]][rLoc[1]]= pRmoveHist;
+				bMoveHist[bLoc[0]][bLoc[1]]= pBmoveHist;
 				rLoc[0]= rh;
 				rLoc[1]= rw;
 				bLoc[0]= bh;
