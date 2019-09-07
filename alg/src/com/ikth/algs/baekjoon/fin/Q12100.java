@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,13 +12,13 @@ import java.util.Queue;
 /**
  * https://www.acmicpc.net/problem/12100
  */
-public class Main {
+public class Q12100 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Main m= new Main();
+			Q12100 m= new Q12100();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {
@@ -60,6 +60,11 @@ public class Main {
 				context= getMovedContext(board, cnt, i);
 				if(context.cnt == cnt + 1) {
 					queue.add(context);
+				} else { /** 만약 4방향 중 한번도 안움직인 경우에 max값 갱신을 누락시키지 않기 위해서 */
+					int candidate= getMax(board);
+					if(max < candidate) {
+						max= candidate;
+					}
 				}
 			}
 		}
