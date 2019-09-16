@@ -1,4 +1,4 @@
-package com.ikth.algs.baekjoon.ing;
+package com.ikth.algs.baekjoon.fin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,13 +9,13 @@ import java.io.OutputStreamWriter;
 /**
  * https://www.acmicpc.net/problem/15684
  */
-public class Main {
+public class Q15684 {
 
 	public static void main(String[] args) {
 		try(BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out))) {
 			
-			Main m= new Main();
+			Q15684 m= new Q15684();
 			m.solution(br, bw);
 			bw.flush();
 		} catch (IOException e) {
@@ -46,7 +46,9 @@ public class Main {
 	
 	private int solution(int[][] sadaries, int start, int cnt) {
 		
-		if(checkDestination(sadaries)) {
+		if(cnt > 3) {
+			return -1;
+		} else if(checkDestination(sadaries)) {
 			return cnt;
 		}
 		
